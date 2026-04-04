@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ChevronLeft, ChevronRight, Pencil } from 'lucide-react'
+import { ChevronLeft, ChevronRight, ChevronDown, Pencil } from 'lucide-react'
 import { useAppContext } from '../../store/AppContext'
 
 const DAYS = ['월', '화', '수', '목', '금', '토', '일']
@@ -15,7 +15,6 @@ function timeToMinutes(timeStr) {
   return h * 60 + m
 }
 
-// Shared form layout used by both Add and Edit
 function TodoForm({ roles, initial, submitLabel, onSubmit, onCancel }) {
   const [title, setTitle] = useState(initial.title)
   const [roleId, setRoleId] = useState(initial.roleId)
@@ -200,6 +199,8 @@ export default function ActionList({ isOpen, onToggle }) {
   const { roles, schedules, addSchedule, updateSchedule, deleteSchedule } = useAppContext()
   const [showForm, setShowForm] = useState(false)
   const [editingId, setEditingId] = useState(null)
+  const [floatingOpen, setFloatingOpen] = useState(true)
+  const [scheduledOpen, setScheduledOpen] = useState(true)
 
   const visibleRoleIds = new Set(roles.filter(r => r.isVisible).map(r => r.id))
 
@@ -295,38 +296,54 @@ export default function ActionList({ isOpen, onToggle }) {
       {/* Body */}
       {isOpen && (
         <div className="flex-1 overflow-y-auto">
-          {/* Scheduled section */}
-          <div className="px-3 pt-3 pb-1 text-xs font-semibold text-gray-400 uppercase tracking-wide">
-            Scheduled
-          </div>
-          {scheduledItems.length === 0 ? (
-            <p className="px-3 pb-2 text-xs text-gray-300">없음</p>
-          ) : (
-            groupedScheduled.map((group, dayIdx) => {
-              if (group.length === 0) return null
-              return (
-                <div key={dayIdx}>
-                  <div className="px-3 py-1 text-xs font-medium text-gray-400 bg-gray-50 border-y border-gray-100">
-                    {DAYS[dayIdx]}요일
-                  </div>
-                  {group.map(renderItem)}
-                </div>
-              )
-            })
+
+          {/* Floating section */}
+          <button
+            onClick={() => setFloatingOpen(v => !v)}
+            className="w-full flex items-center justify-between px-3 pt-3 pb-1 text-xs font-semibold text-gray-400 uppercase tracking-wide hover:text-gray-600 transition-colors"
+          >
+            <span>Floating</span>
+            <ChevronDown
+              size={13}
+              className={`transition-transform duration-200 ${floatingOpen ? '' : '-rotate-90'}`}
+            />
+          </button>
+          {floatingOpen && (
+            floatingItems.length === 0
+              ? <p className="px-3 pb-2 text-xs text-gray-300">없음</p>
+              : floatingItems.map(renderItem)
           )}
 
           {/* Divider */}
           <div className="border-t border-gray-100 my-2" />
 
-          {/* Floating section */}
-          <div className="px-3 pb-1 text-xs font-semibold text-gray-400 uppercase tracking-wide">
-            Floating
-          </div>
-          {floatingItems.length === 0 ? (
-            <p className="px-3 pb-2 text-xs text-gray-300">없음</p>
-          ) : (
-            floatingItems.map(renderItem)
+          {/* Scheduled section */}
+          <button
+            onClick={() => setScheduledOpen(v => !v)}
+            className="w-full flex items-center justify-between px-3 pb-1 text-xs font-semibold text-gray-400 uppercase tracking-wide hover:text-gray-600 transition-colors"
+          >
+            <span>Scheduled</span>
+            <ChevronDown
+              size={13}
+              className={`transition-transform duration-200 ${scheduledOpen ? '' : '-rotate-90'}`}
+            />
+          </button>
+          {scheduledOpen && (
+            scheduledItems.length === 0
+              ? <p className="px-3 pb-2 text-xs text-gray-300">없음</p>
+              : groupedScheduled.map((group, dayIdx) => {
+                  if (group.length === 0) return null
+                  return (
+                    <div key={dayIdx}>
+                      <div className="px-3 py-1 text-xs font-medium text-gray-400 bg-gray-50 border-y border-gray-100">
+                        {DAYS[dayIdx]}요일
+                      </div>
+                      {group.map(renderItem)}
+                    </div>
+                  )
+                })
           )}
+
         </div>
       )}
     </aside>
