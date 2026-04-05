@@ -47,7 +47,7 @@ function Layout() {
       style={{ animation: 'gridFadeIn 0.5s ease forwards' }}
     >
       {/* Header */}
-      <header className="flex items-center px-5 py-3 bg-white border-b border-gray-200 flex-shrink-0">
+      <header className="no-print flex items-center px-5 py-3 bg-white border-b border-gray-200 flex-shrink-0">
         <div className="flex items-center gap-2">
           <span className="text-lg font-bold text-gray-900 tracking-tight">Multiverse</span>
           <span className="text-lg font-light text-gray-400">Time-Grid</span>
@@ -55,7 +55,9 @@ function Layout() {
       </header>
 
       {/* FilterBar */}
-      <FilterBar />
+      <div className="no-print">
+        <FilterBar />
+      </div>
 
       {/* Body */}
       <div className={`flex flex-1 min-h-0 ${!sidebarOpen && !actionOpen ? 'justify-center' : ''}`}>

@@ -5,6 +5,7 @@ import AddScheduleModal from './AddScheduleModal'
 import EditScheduleModal from './EditScheduleModal'
 import ScheduleDetailPopup from './ScheduleDetailPopup'
 import Toast from './Toast'
+import { Printer } from 'lucide-react'
 
 const DAYS = ['월', '화', '수', '목', '금', '토', '일']
 const HOURS = Array.from({ length: 18 }, (_, i) => i + 6) // 6~23
@@ -59,22 +60,22 @@ export default function TimeGrid() {
   const totalWidth = TIME_AXIS_WIDTH + COL_WIDTH * DAYS.length
 
   return (
-    <main className="flex-1 overflow-y-auto overflow-x-auto">
-      <div style={{ minWidth: `${totalWidth}px` }}>
+    <main className="flex-1 overflow-y-auto overflow-x-auto print-main">
+      <div style={{ minWidth: `${totalWidth}px` }} className="print-grid-wrapper">
         {/* Sticky header */}
-        <div className="sticky top-0 z-10 bg-white border-b border-gray-200 flex items-center">
+        <div className="sticky top-0 z-10 bg-white border-b border-gray-200 flex items-center print-grid-header">
           <div style={{ width: `${TIME_AXIS_WIDTH}px`, flexShrink: 0 }} />
           {DAYS.map(day => (
             <div
               key={day}
               style={{ width: `${COL_WIDTH}px`, minWidth: `${COL_WIDTH}px` }}
-              className="text-center text-xs font-medium text-gray-500 py-2 border-l border-gray-100"
+              className="print-day-col text-center text-xs font-medium text-gray-500 py-2 border-l border-gray-100"
             >
               {day}
             </div>
           ))}
           {/* Zoom controls */}
-          <div className="flex items-center gap-1 px-2 border-l border-gray-100 ml-auto">
+          <div className="no-print flex items-center gap-1 px-2 border-l border-gray-100 ml-auto">
             <button
               onClick={() => setRowHeight(h => Math.max(MIN_ROW, h - STEP))}
               className="text-xs text-gray-400 hover:text-gray-700 px-1 transition-colors"
@@ -89,6 +90,16 @@ export default function TimeGrid() {
               +
             </button>
           </div>
+          {/* Print button */}
+          <button
+            onClick={() => window.print()}
+            className="no-print flex items-center gap-1.5 px-3 py-1 mr-2
+                       text-xs text-gray-500 border border-gray-200 rounded-lg
+                       hover:bg-gray-50 hover:text-gray-800 transition-colors"
+          >
+            <Printer size={13} />
+            내보내기
+          </button>
         </div>
 
         {/* Grid body */}
@@ -115,7 +126,7 @@ export default function TimeGrid() {
               <div
                 key={day}
                 style={{ width: `${COL_WIDTH}px`, minWidth: `${COL_WIDTH}px` }}
-                className="relative border-l border-gray-100 cursor-pointer"
+                className="print-day-col relative border-l border-gray-100 cursor-pointer"
                 onClick={e => handleColumnClick(e, dayIdx)}
               >
                 {/* Hour rows (grid lines) */}

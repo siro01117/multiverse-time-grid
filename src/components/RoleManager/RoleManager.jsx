@@ -23,7 +23,7 @@ export default function RoleManager({ isOpen, onToggle }) {
   return (
     <>
       <aside
-        className={`flex-shrink-0 bg-white border-r border-gray-200 flex flex-col h-full transition-all duration-200 ${isOpen ? 'w-40' : 'w-8'}`}
+        className={`no-print flex-shrink-0 bg-white border-r border-gray-200 flex flex-col h-full transition-all duration-200 ${isOpen ? 'w-40' : 'w-8'}`}
       >
         {/* Header */}
         <div className="flex items-center justify-between px-2 py-3 border-b border-gray-100 flex-shrink-0">

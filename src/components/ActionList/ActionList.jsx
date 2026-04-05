@@ -255,7 +255,7 @@ export default function ActionList({ isOpen, onToggle }) {
 
   return (
     <aside
-      className={`flex-shrink-0 bg-white border-l border-gray-200 flex flex-col h-full transition-all duration-200 ${isOpen ? 'w-72' : 'w-8'}`}
+      className={`no-print flex-shrink-0 bg-white border-l border-gray-200 flex flex-col h-full transition-all duration-200 ${isOpen ? 'w-72' : 'w-8'}`}
     >
       {/* Header */}
       <div className="flex items-center justify-between px-2 py-3 border-b border-gray-200 flex-shrink-0">
